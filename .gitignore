@@ -1,0 +1,13 @@
+# Resolved, machine-specific env (regenerate with bootstrap.sh).
+.env
+
+# Never let personal data into the hub.
+career-data/
+workspace/
+*.jsonl
+*.log
+
+# Noise.
+.DS_Store
+__pycache__/
+node_modules/
