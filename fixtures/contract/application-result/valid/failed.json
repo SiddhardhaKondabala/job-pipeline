@@ -1,0 +1,21 @@
+{
+  "schema": "application-result.v1",
+  "executor_run_id": "run-1",
+  "integration_id": "linkedin:4012345678",
+  "canonical_url": "https://www.linkedin.com/jobs/view/4012345678",
+  "started_at": "2026-10-24T12:00:00Z",
+  "finished_at": "2026-10-24T12:00:45Z",
+  "result": "failed",
+  "confidence": null,
+  "company": "Acme",
+  "role": "Staff Engineer",
+  "career_ops_score": 4.2,
+  "resume_path": "/abs/resume.pdf",
+  "cover_letter_path": null,
+  "screenshot_paths": [],
+  "questions_encountered": [],
+  "fields_filled": [],
+  "error_code": "E_NAV",
+  "error_message": "navigation timeout",
+  "manual_action_required": false
+}

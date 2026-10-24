@@ -8,7 +8,7 @@
 SHELL := /usr/bin/env bash
 
 .DEFAULT_GOAL := help
-.PHONY: help bootstrap env sync-schemas check-schemas test test-career-ops test-bot
+.PHONY: help bootstrap env sync-schemas check-schemas check-parity test test-career-ops test-bot
 
 # Prefix for recipes that need the resolved paths. Tolerant of a missing .env.
 LOADENV = set -a; [ -f .env ] && . ./.env; set +a;
@@ -33,6 +33,9 @@ sync-schemas: ## copy canonical schemas career-ops -> bot
 check-schemas: ## fail if the two schema copies have drifted
 	@./tests/schema-drift.test.sh
 
+check-parity: ## fail if the two validators disagree on shared fixtures
+	@./tests/validator-parity.test.sh
+
 test-career-ops: ## career-ops integration unit tests
 	@$(LOADENV) \
 	cd "$$CAREER_OPS_DIR" && node --test tests/integration-*.test.mjs
@@ -41,6 +44,6 @@ test-bot: ## bot integration unit tests
 	@$(LOADENV) \
 	cd "$$LINKEDIN_BOT_DIR" && uv run --quiet pytest tests/test_integration_*.py -o addopts="" -q
 
-test: check-schemas test-career-ops test-bot ## drift check + both integration suites
+test: check-schemas check-parity test-career-ops test-bot ## drift + parity + both integration suites
 	@echo ""
 	@echo "All integration checks passed."
