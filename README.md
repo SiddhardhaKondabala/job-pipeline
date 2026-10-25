@@ -55,6 +55,11 @@ make help               # all targets
 `bootstrap.sh --deps` also installs repo dependencies (`npm install`, `uv sync`)
 when they are missing. Without `--deps` it assumes the repos are already set up.
 
+To run the pipeline for real, follow the staged, safe-by-default operational
+loop in **[docs/ROLLOUT.md](docs/ROLLOUT.md)** (`make export` → `validate` →
+`run-dry` → `run-test` → `run-submit CONFIRM=yes` → `import`). Nothing submits
+an application unless you explicitly run `make run-submit CONFIRM=yes`.
+
 If the repos are not sibling clones, point the hub at them:
 
 ```bash
