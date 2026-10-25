@@ -105,6 +105,16 @@ else
   echo "==> Skipping dependency install (pass --deps to install)"
 fi
 
+echo "==> Seeding bot config from examples (gitignored; needed to import/run the bot)"
+for f in app_config.py search_config.yaml; do
+  if [ ! -f "$LINKEDIN_BOT_DIR/config/$f" ] && [ -f "$LINKEDIN_BOT_DIR/examples/config/$f" ]; then
+    cp "$LINKEDIN_BOT_DIR/examples/config/$f" "$LINKEDIN_BOT_DIR/config/$f"
+    echo "    seeded config/$f"
+  else
+    echo "    config/$f present or no example — leaving it"
+  fi
+done
+
 echo "==> Syncing canonical schemas into the bot"
 "$HUB/scripts/sync-schemas.sh"
 
