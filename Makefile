@@ -8,7 +8,7 @@
 SHELL := /usr/bin/env bash
 
 .DEFAULT_GOAL := help
-.PHONY: help bootstrap env sync-schemas check-schemas check-parity test test-career-ops test-bot
+.PHONY: help bootstrap env sync-schemas check-schemas check-parity test test-career-ops test-bot test-e2e
 
 # Prefix for recipes that need the resolved paths. Tolerant of a missing .env.
 LOADENV = set -a; [ -f .env ] && . ./.env; set +a;
@@ -44,6 +44,10 @@ test-bot: ## bot integration unit tests
 	@$(LOADENV) \
 	cd "$$LINKEDIN_BOT_DIR" && uv run --quiet pytest tests/test_integration_*.py tests/test_queue_*.py tests/test_outcome_mapping.py tests/test_executor_adapter.py tests/test_apply_approved_job.py tests/test_result_writer.py tests/test_apply_agent_security.py -o addopts="" -q
 
-test: check-schemas check-parity test-career-ops test-bot ## drift + parity + both integration suites
+test-e2e: ## full-loop end-to-end (export -> bot apply -> import), no browser/deps
+	@$(LOADENV) \
+	bash tests/e2e.test.sh
+
+test: check-schemas check-parity test-career-ops test-bot test-e2e ## drift + parity + both suites + e2e
 	@echo ""
 	@echo "All integration checks passed."
