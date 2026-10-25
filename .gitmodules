@@ -5,4 +5,4 @@
 [submodule "career-ops"]
 	path = career-ops
 	url = https://github.com/SiddhardhaKondabala/career-ops.git
-	branch = phase-5/result-importer
+	branch = main
