@@ -1,7 +1,7 @@
 [submodule "linkedin-bot"]
 	path = linkedin-bot
 	url = https://github.com/SiddhardhaKondabala/LinkedIn-AI-Job-Applier-Ultimate.git
-	branch = phase-3/queue-mode
+	branch = phase-4/result-writer
 [submodule "career-ops"]
 	path = career-ops
 	url = https://github.com/SiddhardhaKondabala/career-ops.git
