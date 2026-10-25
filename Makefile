@@ -38,7 +38,7 @@ check-parity: ## fail if the two validators disagree on shared fixtures
 
 test-career-ops: ## career-ops integration unit tests
 	@$(LOADENV) \
-	cd "$$CAREER_OPS_DIR" && node --test tests/integration-*.test.mjs tests/export-approved-jobs.test.mjs
+	cd "$$CAREER_OPS_DIR" && node --test tests/integration-*.test.mjs tests/export-approved-jobs.test.mjs tests/import-application-results.test.mjs
 
 test-bot: ## bot integration unit tests
 	@$(LOADENV) \
