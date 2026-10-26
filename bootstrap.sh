@@ -75,6 +75,7 @@ CAREER_OPS_ROOT="$CAREER_OPS_ROOT"
 CAREER_OPS_INTEGRATION_DIR="$CAREER_OPS_INTEGRATION_DIR"
 LINKEDIN_APPROVED_QUEUE="linkedin-approved.json"
 LINKEDIN_RESULTS="linkedin-results.jsonl"
+CAREER_OPS_CLAIM_TIMEOUT_SECONDS="86400"
 EOF
 else
   echo "==> .env already exists — leaving it (delete it to regenerate)"

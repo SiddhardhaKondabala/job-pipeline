@@ -54,7 +54,7 @@ def main() -> None:
         executor_run_id="e2e-run", min_score=queue_min_score(doc), submit=True
     )
     writer = ResultWriter(results_path)
-    claim, release = claimant_from_store(ClaimStore(claims_dir))
+    claim, release, finalize = claimant_from_store(ClaimStore(claims_dir))
 
     results = asyncio.run(
         process_queue(
@@ -65,6 +65,7 @@ def main() -> None:
             verify_artifacts=resolve_job_artifacts,  # real integrity gate
             claim=claim,
             release_claim=release,
+            finalize_claim=finalize,
         )
     )
 

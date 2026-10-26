@@ -58,9 +58,9 @@ launching a browser or logging in. Fix any problem here before spending a login.
 make run-dry
 ```
 
-The bot loads and validates the queue, then stops without applying. It does open
-the browser to establish a session, but never fills or submits anything. Use it
-to confirm login and the end-to-end plumbing.
+The bot loads and validates the queue and artifact hashes, then stops without
+initializing credentials, the LLM, or a browser. Use it to confirm the file and
+contract plumbing; login is first exercised by `run-test`.
 
 ## 4. Test run — fill, never submit
 
@@ -115,9 +115,12 @@ claim state. It reads the same queue, results, and claims files.
 - **Claims.** Before applying, each job is claimed under
   `$CAREER_OPS_INTEGRATION_DIR/claims/`, so two runs never apply the same job and
   a resumed run skips jobs already attempted. A **transient failure releases the
-  claim** (so a later run retries); a real attempt or a human-needed stop keeps
-  it. A crash mid-apply leaves a claim that blocks reprocessing — the safe
-  default. **To re-open jobs, delete the claims directory.**
+  claim** (so a later run retries); a real attempt or a human-needed stop
+  finalizes it permanently. An abandoned in-progress claim expires after 24
+  hours by default; set `CAREER_OPS_CLAIM_TIMEOUT_SECONDS` to another duration,
+  or `0` to disable expiration. Never delete the whole claims directory: that
+  would also reopen confirmed submissions. Remove a single claim only after
+  checking its durable result and tracker state.
 - **Stopping.** Ctrl-C, or Stop in the dashboard, halts the run cleanly; the
   in-flight job's claim is released and durable results remain for finished jobs.
 - **Nothing silently submits.** `run-test` never submits; only
