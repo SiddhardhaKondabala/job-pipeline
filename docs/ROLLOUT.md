@@ -62,6 +62,11 @@ The bot loads and validates the queue and artifact hashes, then stops without
 initializing credentials, the LLM, or a browser. Use it to confirm the file and
 contract plumbing; login is first exercised by `run-test`.
 
+> **Upgrade note:** regenerate `linkedin-approved.json` with `make export` after
+> upgrading from a pre-hardening release. Older queues may have no approval
+> hashes and are intentionally rejected for `manual_review`; they are never
+> applied using existence-only artifact checks.
+
 ## 4. Test run — fill, never submit
 
 ```bash
@@ -118,9 +123,14 @@ claim state. It reads the same queue, results, and claims files.
   claim** (so a later run retries); a real attempt or a human-needed stop
   finalizes it permanently. An abandoned in-progress claim expires after 24
   hours by default; set `CAREER_OPS_CLAIM_TIMEOUT_SECONDS` to another duration,
-  or `0` to disable expiration. Never delete the whole claims directory: that
-  would also reopen confirmed submissions. Remove a single claim only after
-  checking its durable result and tracker state.
+  or `0` to disable expiration. Expired active claims are removed lazily when a
+  run or status read next examines them. The per-job `.lock` files are stable
+  coordination files and intentionally remain; do not delete them while a run
+  may be active. Never delete the whole claims directory: that would also reopen
+  confirmed submissions. Remove a single `.claim` only after checking its
+  durable result and tracker state. If terminal claim finalization fails, the
+  application result is still written and the run stops with an explicit
+  reconciliation error; do not retry that job until its result and claim agree.
 - **Stopping.** Ctrl-C, or Stop in the dashboard, halts the run cleanly; the
   in-flight job's claim is released and durable results remain for finished jobs.
 - **Nothing silently submits.** `run-test` never submits; only
