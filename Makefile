@@ -71,7 +71,7 @@ validate: ## offline: schema + artifact pre-flight of the queue (NO browser)
 	@$(LOADENV) \
 	cd "$$LINKEDIN_BOT_DIR" && uv run --quiet python "$(CURDIR)/scripts/validate-queue.py" "$(QUEUE_PATH)"
 
-run-dry: ## bot: load + validate the queue, then stop (opens the browser to log in; never applies)
+run-dry: ## bot: load + validate queue/artifacts only (no browser, never applies)
 	@$(LOADENV) \
 	cd "$$LINKEDIN_BOT_DIR" && uv run python main.py \
 	  --approved-jobs "$(QUEUE_PATH)" --results "$(RESULTS_PATH)" --dry-run
